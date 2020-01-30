@@ -1,8 +1,12 @@
 # jiraSosReport
 A Scrum of Scrum generator for Jira written in GO. This is my first GO application. Feel free to help me improve it.
 
+## Build
+```# make build```
+
 ## Example output
 ```
+#./jiraSosReport
 Enter Username: 
 Password: 
 
