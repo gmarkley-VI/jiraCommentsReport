@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func credentials() (string, string) {
+func readCredentials() (string, string) {
 	fmt.Print("Enter Username: ")
 	username, _ := terminal.ReadPassword(0)
 
@@ -21,7 +21,7 @@ func credentials() (string, string) {
 
 func main() {
 	jiraURL := "https://issues.redhat.com"
-	username, password := credentials()
+	username, password := readCredentials()
 
 	var jiraJQL [3][2]string
 	jiraJQL[0][0] = "project = WINC AND (resolved >= -7d OR (status in (Done, Pending) AND sprint in openSprints()))"
