@@ -24,11 +24,11 @@ func main() {
 	username, password := readCredentials()
 
 	var jiraJQL [3][2]string
-	jiraJQL[0][0] = "project = WINC AND (resolved >= -7d OR (status in (Done, Pending) AND sprint in openSprints()))"
+	jiraJQL[0][0] = "project = WINC AND (resolved >= -7d OR (status in (Done, Pending) AND sprint in openSprints())) AND priority in (Blocker, Critical, High)"
 	jiraJQL[0][1] = "--Completed\\Completing Last Week--"
-	jiraJQL[1][0] = "project = WINC AND (status in (\"In Progress\", \"Code Review\") AND sprint in openSprints())"
+	jiraJQL[1][0] = "project = WINC AND (status in (\"In Progress\", \"Code Review\") AND sprint in openSprints()) AND priority in (Blocker, Critical, High)"
 	jiraJQL[1][1] = "--Currently Active--"
-	jiraJQL[2][0] = "project = WINC AND (status in (\"To Do\") AND sprint in openSprints())"
+	jiraJQL[2][0] = "project = WINC AND (status in (\"To Do\") AND sprint in openSprints()) AND priority in (Blocker, Critical, High)"
 	jiraJQL[2][1] = "--Remaining in Sprint--"
 
 	tp := jira.BasicAuthTransport{
