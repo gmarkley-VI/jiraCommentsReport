@@ -24,11 +24,11 @@ func main() {
 	username, password := readCredentials()
 
 	var jiraJQL [3][2]string
-	jiraJQL[0][0] = "project = WINC AND (resolved >= -7d OR (status in (Done, Pending) AND sprint in openSprints())) AND priority in (Blocker, Critical, High)"
+	jiraJQL[0][0] = "project = WINC AND (resolved >= -7d OR (status in (Done, Pending) AND sprint in openSprints())) AND priority in (Blocker, Critical, High) ORDER BY priority DESC"
 	jiraJQL[0][1] = "--Completed\\Completing Last Week--"
-	jiraJQL[1][0] = "project = WINC AND (status in (\"In Progress\", \"Code Review\") AND sprint in openSprints()) AND priority in (Blocker, Critical, High)"
+	jiraJQL[1][0] = "project = WINC AND (status in (\"In Progress\", \"Code Review\") AND sprint in openSprints()) AND priority in (Blocker, Critical, High) ORDER BY priority DESC"
 	jiraJQL[1][1] = "--Currently Active--"
-	jiraJQL[2][0] = "project = WINC AND (status in (\"To Do\") AND sprint in openSprints()) AND priority in (Blocker, Critical, High)"
+	jiraJQL[2][0] = "project = WINC AND (status in (\"To Do\") AND sprint in openSprints()) AND priority in (Blocker, Critical, High) ORDER BY priority DESC"
 	jiraJQL[2][1] = "--Remaining in Sprint--"
 
 	tp := jira.BasicAuthTransport{
@@ -64,7 +64,8 @@ func main() {
 		fmt.Printf("\n%s\n", jiraJQL[z][1])
 
 		for _, i := range issues {
-			fmt.Printf("%s: %s - https://issues.redhat.com/browse/%s\n", i.Fields.Type.Name, i.Fields.Summary, i.Key)
+			//fmt.Printf("%s: %s - https://issues.redhat.com/browse/%s\n", i.Fields.Type.Name, i.Fields.Summary, i.Key)
+			fmt.Printf("%s\n", i.Fields.Summary)
 		}
 	}
 
