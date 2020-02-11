@@ -25,7 +25,7 @@ func main() {
 
 	var jiraJQL [3][2]string
 	jiraJQL[0][0] = "project = WINC AND status in (\"In Progress\", \"Code Review\")AND(sprint in openSprints())"
-	jiraJQL[0][1] = "--Current Work JQL--"
+	jiraJQL[0][1] = "--Current Winc Work Items--"
 
 	tp := jira.BasicAuthTransport{
 		Username: username,
