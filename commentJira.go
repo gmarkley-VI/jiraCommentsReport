@@ -4,21 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/andygrunwald/go-jira"
-	"golang.org/x/crypto/ssh/terminal"
+	"github.com/openshift/gmarkley-VI/jiraSosRepot/functions"
 	"os"
 	"strings"
 )
-
-func ReadCredentials() (string, string) {
-	fmt.Print("Enter Username: ")
-	username, _ := terminal.ReadPassword(0)
-
-	fmt.Printf("\nPassword: ")
-	password, _ := terminal.ReadPassword(0)
-	fmt.Printf("\n")
-
-	return strings.TrimSpace(string(username)), strings.TrimSpace(string(password))
-}
 
 func readComment() (string, string) {
 	reader := bufio.NewReader(os.Stdin)
@@ -34,7 +23,7 @@ func readComment() (string, string) {
 
 func main() {
 	jiraURL := "https://issues.redhat.com"
-	username, password := ReadCredentials()
+	username, password := functions.ReadCredentials()
 
 	tp := jira.BasicAuthTransport{
 		Username: username,

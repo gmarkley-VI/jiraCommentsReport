@@ -3,25 +3,14 @@ package main
 import (
 	"fmt"
 	"github.com/andygrunwald/go-jira"
-	"golang.org/x/crypto/ssh/terminal"
+	"github.com/openshift/gmarkley-VI/jiraSosRepot/functions"
 	"log"
 	"strings"
 )
 
-func readCredentials() (string, string) {
-	fmt.Print("Enter Username: ")
-	username, _ := terminal.ReadPassword(0)
-
-	fmt.Printf("\nPassword: ")
-	password, _ := terminal.ReadPassword(0)
-	fmt.Printf("\n")
-
-	return strings.TrimSpace(string(username)), strings.TrimSpace(string(password))
-}
-
 func main() {
 	jiraURL := "https://issues.redhat.com"
-	username, password := readCredentials()
+	username, password := functions.ReadCredentials()
 
 	var jiraJQL [3][2]string
 	jiraJQL[0][0] = "project = WINC AND (resolved >= -7d OR (status in (Done, Pending) AND sprint in openSprints())) AND priority in (Blocker, Critical, High) ORDER BY priority DESC"
