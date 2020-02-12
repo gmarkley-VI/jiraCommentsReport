@@ -3,41 +3,21 @@ package main
 import (
 	"fmt"
 	"github.com/andygrunwald/go-jira"
-	"golang.org/x/crypto/ssh/terminal"
+	"github.com/openshift/gmarkley-VI/jiraSosRepot/functions"
 	"log"
 	"strings"
 )
 
-func readCredentials() (string, string) {
-	fmt.Print("Enter Username: ")
-	username, _ := terminal.ReadPassword(0)
-
-	fmt.Printf("\nPassword: ")
-	password, _ := terminal.ReadPassword(0)
-	fmt.Printf("\n")
-
-	return strings.TrimSpace(string(username)), strings.TrimSpace(string(password))
-}
-
 func main() {
 	jiraURL := "https://issues.redhat.com"
-	username, password := readCredentials()
+	username, password := functions.ReadCredentials()
 
-	var jiraJQL [3][2]string
+	var jiraJQL [1][2]string
 	jiraJQL[0][0] = "project = WINC AND status in (\"In Progress\", \"Code Review\")AND(sprint in openSprints())"
 	jiraJQL[0][1] = "--Current Winc Work Items--"
 
-	tp := jira.BasicAuthTransport{
-		Username: username,
-		Password: password,
-	}
-
 	//Create the client
-	client, err := jira.NewClient(tp.Client(), strings.TrimSpace(jiraURL))
-	if err != nil {
-		fmt.Printf("\nerror: %v\n", err)
-		return
-	}
+	client, _ := functions.CreatTheClient(username, password, jiraURL)
 
 	//Loop over the jiraJQL array and Request the issue objects
 	for z := 0; z < len(jiraJQL); z++ {
@@ -52,7 +32,7 @@ func main() {
 
 		// SearchPages will page through results and pass each issue to appendFunc taken from the Jira Example implementation
 		// In this example, we'll search for all the issues with the provided JQL filter and Print the header that goes with it.
-		err = client.Issue.SearchPages(fmt.Sprintf(`%s`, jiraJQL[z][0]), nil, appendFunc)
+		err := client.Issue.SearchPages(fmt.Sprintf(`%s`, jiraJQL[z][0]), nil, appendFunc)
 		if err != nil {
 			log.Fatal(err)
 		}
