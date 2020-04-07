@@ -1,31 +1,12 @@
-# jiraSosReport
-A Scrum of Scrum generator for Jira written in GO. This is my first GO application. Feel free to help me improve it.
+# jiraCommentsReport
+A comments checker that checks to see if a jira comment has been updated and then asks for one if its needed. Jira written in GO.
 
 ## Build
 ```# make build```
 
 ## Example output
 ```
-#./jiraSosReport
-Enter Username: 
-Password: 
+#./jiraCommentsReport
 
---Completed\Completing Last Week--
-Bug: Windows pods communication across different windows node failed - https://URL/browse/WINC-999
-Story: Replace building wmcb with a release location - https://url/browse/WINC-999
-Task: Development drop for Windows Containers (AWS) - https://url/browse/WINC-999
-
---Currently Active--
-Bug: Windows pods communication across different windows node failed - https://URL/browse/WINC-999
-Story: Replace building wmcb with a release location - https://url/browse/WINC-999
-Task: Development drop for Windows Containers (AWS) - https://url/browse/WINC-999
-
---Remaining in Sprint--
-Bug: Windows pods communication across different windows node failed - https://URL/browse/WINC-999
-Story: Replace building wmcb with a release location - https://url/browse/WINC-999
-Task: Development drop for Windows Containers (AWS) - https://url/browse/WINC-999
-Bug: Windows pods communication across different windows node failed - https://URL/browse/WINC-999
-Story: Replace building wmcb with a release location - https://url/browse/WINC-999
-Task: Development drop for Windows Containers (AWS) - https://url/browse/WINC-999
 
 ```
