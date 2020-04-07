@@ -48,8 +48,23 @@ func main() {
 			if len(u.RenderedFields.Comments.Comments) >= 1 {
 				c := u.RenderedFields.Comments.Comments[len(u.RenderedFields.Comments.Comments)-1]
 				if strings.Contains(c.Updated, "days ago") {
-					fmt.Printf("%s Please comment/update - Last was %+v - ", i.Fields.Assignee.DisplayName, c.Updated)
-					fmt.Printf("%s/browse/%s \n", strings.TrimSpace(jiraURL), i.Key)
+					commentString := fmt.Sprintf("%s Please comment/update - Last update was %+v", i.Fields.Assignee.DisplayName, c.Updated)
+					com := jira.Comment{
+						ID:           i.ID,
+						Self:         "",
+						Name:         "",
+						Author:       jira.User{},
+						Body:         commentString,
+						UpdateAuthor: jira.User{},
+						Updated:      "",
+						Created:      "",
+						Visibility:   jira.CommentVisibility{},
+					}
+					commentOUT, _, err := client.Issue.AddComment(i.Key, &com)
+					if err != nil {
+						panic(err)
+					}
+					fmt.Printf("ID - %s \n Body - %+v\n", i.Key, commentOUT.Body)
 				}
 			}
 		}
