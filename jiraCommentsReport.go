@@ -50,7 +50,7 @@ func main() {
 
 			if len(u.RenderedFields.Comments.Comments) >= 1 {
 				c := u.RenderedFields.Comments.Comments[len(u.RenderedFields.Comments.Comments)-1]
-				if strings.Contains(c.Updated, "days ago") || strings.Contains(c.Updated, "Yesterday") {
+				if strings.Contains(c.Updated, "days ago") {
 					fmt.Printf("%s Please comment/update - Last was %+v - ", i.Fields.Assignee.DisplayName, c.Updated)
 					fmt.Printf("%s/browse/%s \n", strings.TrimSpace(jiraURL), i.Key)
 				}
