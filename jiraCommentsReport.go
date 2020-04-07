@@ -47,10 +47,13 @@ func main() {
 				fmt.Printf("\n==> error: %v\n", err)
 				return
 			}
-			c := u.RenderedFields.Comments.Comments[len(u.RenderedFields.Comments.Comments)-1]
-			if strings.Contains(c.Updated, "days ago") || strings.Contains(c.Updated, "Yesterday") {
-				fmt.Printf("%s Please comment/update - Last was %+v - ", i.Fields.Assignee.DisplayName, c.Updated)
-				fmt.Printf("%s/browse/%s \n", strings.TrimSpace(jiraURL), i.Key)
+
+			if len(u.RenderedFields.Comments.Comments) >= 1 {
+				c := u.RenderedFields.Comments.Comments[len(u.RenderedFields.Comments.Comments)-1]
+				if strings.Contains(c.Updated, "days ago") || strings.Contains(c.Updated, "Yesterday") {
+					fmt.Printf("%s Please comment/update - Last was %+v - ", i.Fields.Assignee.DisplayName, c.Updated)
+					fmt.Printf("%s/browse/%s \n", strings.TrimSpace(jiraURL), i.Key)
+				}
 			}
 		}
 	}
