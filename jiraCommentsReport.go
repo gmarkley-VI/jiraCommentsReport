@@ -14,7 +14,6 @@ func main() {
 
 	var jiraJQL [1][2]string
 	jiraJQL[0][0] = "project = WINC AND status in (\"In Progress\", \"Code Review\")AND(sprint in openSprints())"
-	jiraJQL[0][1] = "--Current Winc Work Items--"
 
 	//Create the client
 	client, _ := functions.CreatTheClient(username, password, jiraURL)
@@ -36,8 +35,6 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		fmt.Printf("\n%s\n", jiraJQL[z][1])
 
 		for _, i := range issues {
 			options := &jira.GetQueryOptions{Expand: "renderedFields"}
