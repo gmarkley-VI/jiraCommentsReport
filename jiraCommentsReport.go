@@ -66,6 +66,24 @@ func main() {
 					}
 					fmt.Printf("ID - %s \n Body - %+v\n", i.Key, commentOUT.Body)
 				}
+			} else {
+				commentString := fmt.Sprintf("%s Please add a comment.", i.Fields.Assignee.DisplayName)
+				com := jira.Comment{
+					ID:           i.ID,
+					Self:         "",
+					Name:         "",
+					Author:       jira.User{},
+					Body:         commentString,
+					UpdateAuthor: jira.User{},
+					Updated:      "",
+					Created:      "",
+					Visibility:   jira.CommentVisibility{},
+				}
+				commentOUT, _, err := client.Issue.AddComment(i.Key, &com)
+				if err != nil {
+					panic(err)
+				}
+				fmt.Printf("ID - %s \n Body - %+v\n", i.Key, commentOUT.Body)
 			}
 		}
 	}
