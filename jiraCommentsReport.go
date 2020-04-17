@@ -10,7 +10,7 @@ import (
 )
 
 func exportConsole(key string, output string) {
-	fmt.Printf("ID - %s - %s\n", key, output)
+	fmt.Printf("%s - %s\n", key, output)
 }
 
 func exportJira(client *jira.Client, id string, key string, output string) *jira.Comment {
@@ -35,6 +35,7 @@ func exportJira(client *jira.Client, id string, key string, output string) *jira
 func exportSlack(token string, key string, output string) {
 	api := slack.New(token)
 
+	output = key + " - " + output
 	// Production channelID, timestamp, err := api.PostMessage("#forum-winc", slack.MsgOptionText(output, false))
 	channelID, timestamp, err := api.PostMessage("#forum-winc", slack.MsgOptionText(output, false))
 	if err != nil {
@@ -49,8 +50,8 @@ func main() {
 	jiraURL := "https://issues.redhat.com"
 	username, password, slackToken := functions.ReadCredentials()
 	var jiraJQL [1][2]string
-	//jiraJQL[0][0] = "project = WINC AND status in (\"In Progress\", \"Code Review\")AND(sprint in openSprints())"
-	jiraJQL[0][0] = "project = WINC"
+	jiraJQL[0][0] = "project = WINC AND status in (\"In Progress\", \"Code Review\")AND(sprint in openSprints())"
+	//jiraJQL[0][0] = "project = WINC"
 
 	//Create the client
 	client, _ := functions.CreatTheClient(username, password, jiraURL)
@@ -80,21 +81,26 @@ func main() {
 				fmt.Printf("\n==> error: %v\n", err)
 				return
 			}
-			var name = i.Fields.Assignee.DisplayName
+
+			name := "Not Assigned"
+			var p = i.Fields.Assignee
+			if p != nil {
+				name = i.Fields.Assignee.DisplayName
+			}
 
 			if len(u.RenderedFields.Comments.Comments) >= 1 {
 
 				c := u.RenderedFields.Comments.Comments[len(u.RenderedFields.Comments.Comments)-1]
 				if strings.Contains(c.Updated, "days ago") {
-					commentString := fmt.Sprintf("%v Please comment/update - Last update was %+v", name, c.Updated)
+					commentString := fmt.Sprintf("%s Please comment/update - Last update was %+v", name, c.Updated)
 					//exportJira(client, i.ID, i.Key, commentString)
-					exportConsole(i.Key, commentString)
+					//exportConsole(i.Key, commentString)
 					exportSlack(slackToken, i.Key, commentString)
 				}
 			} else {
-				commentString := fmt.Sprintf("%v Please add a comment.", name)
+				commentString := fmt.Sprintf("%s Please add a comment.", name)
 				//exportJira(client, i.ID, i.Key, commentString)
-				exportConsole(i.Key, commentString)
+				//exportConsole(i.Key, commentString)
 				exportSlack(slackToken, i.Key, commentString)
 			}
 		}
