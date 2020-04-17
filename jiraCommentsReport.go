@@ -8,10 +8,33 @@ import (
 	"strings"
 )
 
+func exportConsole(key string, output string) {
+	fmt.Printf("ID - %s - %s\n", key, output)
+}
+
+func exportJira(client *jira.Client, id string, key string, output string) *jira.Comment {
+	com := jira.Comment{
+		ID:           id,
+		Self:         "",
+		Name:         "",
+		Author:       jira.User{},
+		Body:         output,
+		UpdateAuthor: jira.User{},
+		Updated:      "",
+		Created:      "",
+		Visibility:   jira.CommentVisibility{},
+	}
+	commentOUT, _, err := client.Issue.AddComment(key, &com)
+	if err != nil {
+		panic(err)
+	}
+	return commentOUT
+}
+
 func main() {
+	//Setup
 	jiraURL := "https://issues.redhat.com"
 	username, password := functions.ReadCredentials()
-
 	var jiraJQL [1][2]string
 	jiraJQL[0][0] = "project = WINC AND status in (\"In Progress\", \"Code Review\")AND(sprint in openSprints())"
 
@@ -39,7 +62,6 @@ func main() {
 		for _, i := range issues {
 			options := &jira.GetQueryOptions{Expand: "renderedFields"}
 			u, _, err := client.Issue.Get(i.Key, options)
-
 			if err != nil {
 				fmt.Printf("\n==> error: %v\n", err)
 				return
@@ -49,41 +71,13 @@ func main() {
 				c := u.RenderedFields.Comments.Comments[len(u.RenderedFields.Comments.Comments)-1]
 				if strings.Contains(c.Updated, "days ago") {
 					commentString := fmt.Sprintf("%s Please comment/update - Last update was %+v", i.Fields.Assignee.DisplayName, c.Updated)
-					com := jira.Comment{
-						ID:           i.ID,
-						Self:         "",
-						Name:         "",
-						Author:       jira.User{},
-						Body:         commentString,
-						UpdateAuthor: jira.User{},
-						Updated:      "",
-						Created:      "",
-						Visibility:   jira.CommentVisibility{},
-					}
-					commentOUT, _, err := client.Issue.AddComment(i.Key, &com)
-					if err != nil {
-						panic(err)
-					}
-					fmt.Printf("ID - %s \n Body - %+v\n", i.Key, commentOUT.Body)
+					exportJira(client, i.ID, i.Key, commentString)
+					exportConsole(i.Key, commentString)
 				}
 			} else {
 				commentString := fmt.Sprintf("%s Please add a comment.", i.Fields.Assignee.DisplayName)
-				com := jira.Comment{
-					ID:           i.ID,
-					Self:         "",
-					Name:         "",
-					Author:       jira.User{},
-					Body:         commentString,
-					UpdateAuthor: jira.User{},
-					Updated:      "",
-					Created:      "",
-					Visibility:   jira.CommentVisibility{},
-				}
-				commentOUT, _, err := client.Issue.AddComment(i.Key, &com)
-				if err != nil {
-					panic(err)
-				}
-				fmt.Printf("ID - %s \n Body - %+v\n", i.Key, commentOUT.Body)
+				exportJira(client, i.ID, i.Key, commentString)
+				exportConsole(i.Key, commentString)
 			}
 		}
 	}
