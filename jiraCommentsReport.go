@@ -12,7 +12,6 @@ import (
 func exportConsole(key string, output string) {
 	fmt.Printf("%s - %s\n", key, output)
 }
-
 func exportJira(client *jira.Client, id string, key string, output string) *jira.Comment {
 	com := jira.Comment{
 		ID:           id,
@@ -31,7 +30,6 @@ func exportJira(client *jira.Client, id string, key string, output string) *jira
 	}
 	return commentOUT
 }
-
 func exportSlack(token string, key string, output string) {
 	api := slack.New(token)
 
@@ -89,7 +87,6 @@ func main() {
 			}
 
 			if len(u.RenderedFields.Comments.Comments) >= 1 {
-
 				c := u.RenderedFields.Comments.Comments[len(u.RenderedFields.Comments.Comments)-1]
 				if strings.Contains(c.Updated, "days ago") {
 					commentString := fmt.Sprintf("%s Please comment/update - Last update was %+v", name, c.Updated)
