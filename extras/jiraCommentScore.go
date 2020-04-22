@@ -36,12 +36,13 @@ func scoreComment(comment string) float64 {
 	var sentenceCount float64 = float64(len(doc.Sentences()))
 
 	// calculate score
-	var score = entitiesCount*10 + sentenceCount*5 + nounCount + verbCount
+	var score = entitiesCount*10 + sentenceCount*2.5 + nounCount + verbCount
 	if score >= 100 {
 		score = 99
 	}
 	fmt.Printf("\n------------------------------------------------------\n%v\n", comment)
-	fmt.Printf("Entities: %v, Sentances: %v, Nouns: %v, Verb: %v, Score: %v\n", entitiesCount, sentenceCount, nounCount, verbCount, score)
+	//fmt.Printf("Entities: %v, Sentances: %v, Nouns: %v, Verb: %v, Score: %v\n", entitiesCount, sentenceCount, nounCount, verbCount, score)
+	fmt.Printf("Score: %v\n", score)
 	return score
 }
 
