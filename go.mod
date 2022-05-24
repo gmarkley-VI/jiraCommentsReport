@@ -3,7 +3,7 @@ module github.com/openshift/gmarkley-VI/jiraSosRepot
 go 1.13
 
 require (
-	github.com/andygrunwald/go-jira v1.12.0
+	github.com/andygrunwald/go-jira v1.15.1
 	github.com/deckarep/golang-set v1.7.1 // indirect
 	github.com/gorilla/websocket v1.4.1 // indirect
 	github.com/mingrammer/commonregex v1.0.1 // indirect
